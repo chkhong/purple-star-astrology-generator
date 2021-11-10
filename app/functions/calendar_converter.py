@@ -3,11 +3,6 @@ import traceback
 from lunardate import LunarDate as ld
 
 class CalendarConverter:
-  def __init__(self):
-    pass
-
-  def __del__(self):
-    pass
 
   def western_to_chinese(self, year:int, month:int, day:int, hour:int=0) -> dict:
     r = {}
