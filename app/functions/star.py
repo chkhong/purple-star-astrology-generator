@@ -9,6 +9,7 @@ class Star:
 
 class StarMapper:
   def __init__(self):
+    # 代码与星星
     self.code_star_map = {
       'm1': '紫微',
       'm2': '天機',
@@ -85,6 +86,7 @@ class StarMapper:
       'dz11': '戌',
       'dz12': '亥',
     }
+    # 星曜亮度
     self.star_intensity_map = {
       'm1': [5,1,1,2,7,2,1,1,2,5,5,2],
       'm2': [1,7,2,2,1,5,1,7,5,2,1,5],
@@ -101,6 +103,19 @@ class StarMapper:
       'm13': [2,1,1,7,2,5,2,2,1,5,1,5],
       'm14': [1,2,7,2,2,5,1,1,7,7,2,5]
     }
+    # 生年四化
+    self.year_effect_map = {
+      1: ['m6','m14','m4','m3'],
+      2: ['m2','m12','m1','m8'],
+      3: ['m5','m2','g1','m6'],
+      4: ['m8','m5','m2','m10'],
+      5: ['m9','m8','g4','m2'],
+      6: ['m4','m9','m12','g2'],
+      7: ['m3','m4','m8','m5'],
+      8: ['m10','m3','m8','g1'],
+      9: ['m12','m1','g3','m4'],
+      0: ['m14','m10','m8','m9']
+    }
 
   def intensity_of(self, code:str, dz:str) -> str:
     ''' Returns intensity of the star in specific location
@@ -112,7 +127,7 @@ class StarMapper:
         intensity: str
     '''
     logger.info('-'*100)
-    logger.info('brightness() running...')
+    logger.info('intensity_of() running...')
     intensity = ''
     try:
       i = int(dz[2:])
@@ -124,7 +139,31 @@ class StarMapper:
       logger.error(traceback.format_exc())
     finally:
       return intensity
+  
+  def effect_of(self, code:str, year:int) -> str:
+    ''' Return the star effect 
+  
+      Args:
+        code: the code of star
+        year: birth year
+      Returns:
+        effect: str
+    '''
+    logger.info('-'*100)
+    logger.info('effect_of() running...')
+    effect = ''
+    try:
+      remain = (year - 3) % 10
+      if code in self.year_effect_map[remain]:
+        effect = 'e' + str(self.year_effect_map[remain].index(code)+1)
+        logger.debug(f"{self.code_star_map[code]}'s effect in {year} is {self.code_star_map[effect]}")
+    except Exception as e:
+      logger.error(e)
+      logger.error(traceback.format_exc())
+    finally:
+      return effect
 
 if __name__ == '__main__':
   sm = StarMapper()
-  sm.intensity_of('m2', 'dz4')
+  sm.intensity_of('m9', 'dz4')
+  sm.effect_of('m4', 1999)
