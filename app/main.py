@@ -2,14 +2,11 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import users
 
 app = FastAPI(
   title="Sample Application",
   description="Backend API",
 )
-
-app.include_router(users.router)
 
 # allow CORS setting
 origins = ['*']
