@@ -1,6 +1,7 @@
 from loguru import logger
-from map import code_star_map, star_intensity_map, year_effect_map
+from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map
 import traceback
+from math import floor
 
 class Star:
   def __init__(self, code:str, intensity:int=0, effect:int=0):
@@ -16,6 +17,8 @@ class StarMapper:
     self.star_intensity_map = star_intensity_map
     # 生年四化
     self.year_effect_map = year_effect_map
+    self.five_elements_dz_map = five_elements_dz_map
+    self.five_elements_map = five_elements_map
 
   # 星曜亮度
   def intensity_of(self, code:str, dz:str) -> str:
@@ -65,8 +68,34 @@ class StarMapper:
     finally:
       return effect
 
+  def setFiveElements(self, payload:dict, tg:str, dz:str) -> dict:
+    ''' Set 五行局
+  
+      Args:
+        tg: tian gan of birth year
+        dz: dizhi of the birth hour
+      Returns:
+        payload: dict
+    '''
+    logger.info('='*100)
+    logger.info('setFiveElements() running...')
+  
+    # 命宫天干
+    tg_int = int(tg[2:])
+    tg_int_temp = floor((tg_int + 2)/2)
+
+    # 命宫地支
+    dz_int = int(dz[2:])
+    dz_int_temp = five_elements_dz_map[dz_int]
+
+    five_elems_index = (tg_int_temp + dz_int_temp) % 5
+
+    payload['五行局'] = five_elements_map[five_elems_index]
+
+    return payload
 
 if __name__ == '__main__':
   sm = StarMapper()
-  sm.intensity_of('m8', 'dz3')
-  sm.effect_of('m3', 1999)
+  # sm.intensity_of('m8', 'dz3')
+  # sm.effect_of('m3', 1999)
+  sm.setFiveElements({},'tg2','dz2')

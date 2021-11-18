@@ -49,7 +49,7 @@ class PlaceMapper:
     return payload
 
   def setPalaceDZ(self, payload:dict, tg:str) -> dict:
-    ''' Function description
+    ''' Set 12 宫地支
   
       Args:
         tg: tian gan of birth year
