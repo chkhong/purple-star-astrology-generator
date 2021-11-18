@@ -1,5 +1,5 @@
 from loguru import logger
-from map import code_star_map, star_intensity_map, year_effect_map
+from .map import code_star_map, star_intensity_map, year_effect_map
 import traceback
 from math import ceil
 

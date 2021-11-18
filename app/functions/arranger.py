@@ -1,7 +1,7 @@
 from loguru import logger
 import traceback
-from calendar_converter import CalendarConverter
-from place import PlaceMapper
+from .calendar_converter import CalendarConverter
+from .place import PlaceMapper
 
 class Arranger:
   def __init__(self):
@@ -50,7 +50,7 @@ class Arranger:
       logger.error(e)
       logger.error(traceback.format_exc())
     finally:
-      pass
+      return "ok"
 
 if __name__ == '__main__':
   a = Arranger()

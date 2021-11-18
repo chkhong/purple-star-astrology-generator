@@ -17,6 +17,7 @@ class StarMapper:
     # 生年四化
     self.year_effect_map = year_effect_map
 
+  # 星曜亮度
   def intensity_of(self, code:str, dz:str) -> str:
     ''' Returns intensity of the star in specific location
   
@@ -40,6 +41,7 @@ class StarMapper:
     finally:
       return intensity
   
+  # 星曜四化 
   def effect_of(self, code:str, year:int) -> str:
     ''' Return the star effect 
   
