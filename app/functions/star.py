@@ -32,7 +32,7 @@ class StarMapper:
     intensity = ''
     try:
       i = int(dz[2:])
-      temp = self.star_intensity_map[code][i-1]
+      temp = self.star_intensity_map[code][i]
       intensity = 'i' + str(temp)
       logger.debug(f"{self.code_star_map[code]}'s intensity at {self.code_star_map[dz]}: {self.code_star_map[intensity]}")
     except Exception as e:
@@ -57,7 +57,7 @@ class StarMapper:
     try:
       remain = (year - 3) % 10
       if code in self.year_effect_map[remain]:
-        effect = 'e' + str(self.year_effect_map[remain].index(code)+1)
+        effect = 'e' + str(self.year_effect_map[remain].index(code))
         logger.debug(f"{self.code_star_map[code]}'s effect in {year} is {self.code_star_map[effect]}")
     except Exception as e:
       logger.error(e)
@@ -68,5 +68,5 @@ class StarMapper:
 
 if __name__ == '__main__':
   sm = StarMapper()
-  sm.intensity_of('m9', 'dz4')
-  sm.effect_of('m4', 1999)
+  sm.intensity_of('m8', 'dz3')
+  sm.effect_of('m3', 1999)

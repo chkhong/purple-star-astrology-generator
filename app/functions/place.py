@@ -24,28 +24,27 @@ class PlaceMapper:
 
     dz_int = int(dz[2:])
     # 命宫位置
-    life_location = 3 + month - dz_int
+    life_location = (1 + month - (dz_int)) % 12
 
     # 排12宫
-    circular_loop = [1,2,3,4,5,6,7,8,9,10,11,12]
-    for i in range(1,13):
+    for i in range(0,12):
       # loc: location of palace
-      loc = circular_loop[life_location-i]
+      loc = (life_location-i)%12
       payload[loc]['宫位'] = code_star_map['p' + str(i)]
     
     # 找身宫
     if dz_int % 6 == 1:
-      payload['身宫'] = code_star_map['p1']
+      payload['身宫'] = code_star_map['p10']
     elif dz_int % 6 == 2:
-      payload['身宫'] = code_star_map['p11']
+      payload['身宫'] = code_star_map['p8']
     elif dz_int % 6 == 3:
-      payload['身宫'] = code_star_map['p9']
+      payload['身宫'] = code_star_map['p6']
     elif dz_int % 6 == 4:
-      payload['身宫'] = code_star_map['p7']
+      payload['身宫'] = code_star_map['p4']
     elif dz_int % 6 == 5:
-      payload['身宫'] = code_star_map['p5']
+      payload['身宫'] = code_star_map['p2']
     elif dz_int % 6 == 0:
-      payload['身宫'] = code_star_map['p3']
+      payload['身宫'] = code_star_map['p0']
 
     return payload
 
@@ -60,13 +59,12 @@ class PlaceMapper:
     logger.info('='*100)
     logger.info('setPalaceDZ() running...')
     
-    tg_int_reduced = int(tg[2:])
-    if tg_int_reduced > 5:
-      tg_int_reduced -= 5
-    loop = [3,4,5,6,7,8,9,10,11,12,1,2]
-    
+    tg_int_reduced = int(tg[2:]) % 5
+    start = tg_palace_dz_map[tg_int_reduced]
+    logger.warning(start)
+
     for i in range(0,12):
-      payload[loop[i]]['地支'] = code_star_map[tg_palace_dz_map[tg_int_reduced][i]]
+      payload[(i+2)%12]['地支'] = code_star_map['tg'+str((start+i)%10)]
 
     return payload
 
@@ -75,6 +73,7 @@ if __name__ == '__main__':
   pm = PlaceMapper()
   r = {
       '身宫': '', '五行局': '',
+      0:{},
       1:{},
       2:{},
       3:{},
@@ -86,8 +85,8 @@ if __name__ == '__main__':
       9:{},
       10:{},
       11:{},
-      12:{},
   }
-  test = pm.setAllPlace(r, 11, 'dz11')
-  test2 = pm.setPalaceDZ(test, 'tg6')
+  test = pm.setAllPlace(r, 11, 'dz10')
+  logger.debug(test)
+  test2 = pm.setPalaceDZ(test, 'tg5')
   logger.debug(test2)

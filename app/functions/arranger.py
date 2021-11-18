@@ -1,7 +1,7 @@
 from loguru import logger
 import traceback
-from .calendar_converter import CalendarConverter
-from .place import PlaceMapper
+from calendar_converter import CalendarConverter
+from place import PlaceMapper
 
 class Arranger:
   def __init__(self):
@@ -21,6 +21,7 @@ class Arranger:
     '''
     r = {
       "身宫": "", "五行局": "",
+      0:{},
       1:{},
       2:{},
       3:{},
@@ -32,7 +33,6 @@ class Arranger:
       9:{},
       10:{},
       11:{},
-      12:{},
     }
     logger.info('='*100)
     logger.info('arrange() running...')
