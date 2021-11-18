@@ -107,3 +107,12 @@ year_effect_map = {
   9: ['m12','m1','g3','m4'],
   0: ['m14','m10','m8','m9']
 }
+
+# 安十二宫干表
+tg_palace_dz_map = {
+  1: ['tg3','tg4','tg5','tg6','tg7','tg8','tg9','tg10','tg1','tg2','tg3','tg4'],
+  2: ['tg5','tg6','tg7','tg8','tg9','tg10','tg1','tg2','tg3','tg4','tg5','tg6'],
+  3: ['tg7','tg8','tg9','tg10','tg1','tg2','tg3','tg4','tg5','tg6','tg7','tg8'],
+  4: ['tg9','tg10','tg1','tg2','tg3','tg4','tg5','tg6','tg7','tg8','tg9','tg10'],
+  5: ['tg1','tg2','tg3','tg4','tg5','tg6','tg7','tg8','tg9','tg10','tg1','tg2']
+}

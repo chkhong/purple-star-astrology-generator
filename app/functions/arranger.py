@@ -45,6 +45,9 @@ class Arranger:
       # 安命宫
       r = self.pm.setAllPlace(r, birth_details['month'], birth_details['dz'])
 
+      # 安十二宫干
+      r = self.pm.setPalaceDZ(r, birth_details['tg'])
+
       logger.debug(r)
     except Exception as e:
       logger.error(e)

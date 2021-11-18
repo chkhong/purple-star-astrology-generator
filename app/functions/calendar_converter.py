@@ -13,6 +13,7 @@ class CalendarConverter:
       r['month'] = temp.month
       r['day'] = temp.day
       
+      # 地支
       if hour >= 23 or hour < 1:
         r['dz'] = 'dz1'
       elif hour >= 1 and hour < 3:
@@ -38,6 +39,10 @@ class CalendarConverter:
       elif hour >= 21 and hour < 23:
         r['dz'] = 'dz12'
 
+      # 天干
+      temp = (r['year'] - 3) % 10
+      r['tg'] = 'tg' + str(temp)
+
       r['minute'] = minute
     except Exception as e:
       logger.error(e)
@@ -47,5 +52,5 @@ class CalendarConverter:
 
 if __name__ == '__main__':
   cc = CalendarConverter()
-  test = cc.western_to_chinese(2021, 12, 1, 17)
+  test = cc.western_to_chinese(2000, 1, 1, 19, 33)
   logger.debug(test)
