@@ -14,29 +14,29 @@ class CalendarConverter:
       r['day'] = temp.day
       
       if hour >= 23 or hour < 1:
-        r['hour'] = 'dz1'
+        r['dz'] = 'dz1'
       elif hour >= 1 and hour < 3:
-        r['hour'] = 'dz2'
+        r['dz'] = 'dz2'
       elif hour >= 3 and hour < 5:
-        r['hour'] = 'dz3'
+        r['dz'] = 'dz3'
       elif hour >= 5 and hour < 7:
-        r['hour'] = 'dz4'
+        r['dz'] = 'dz4'
       elif hour >= 7 and hour < 9:
-        r['hour'] = 'dz5'
+        r['dz'] = 'dz5'
       elif hour >= 9 and hour < 11:
-        r['hour'] = 'dz6'
+        r['dz'] = 'dz6'
       elif hour >= 11 and hour < 13:
-        r['hour'] = 'dz7'
+        r['dz'] = 'dz7'
       elif hour >= 13 and hour < 15:
-        r['hour'] = 'dz8'
+        r['dz'] = 'dz8'
       elif hour >= 15 and hour < 17:
-        r['hour'] = 'dz9'
+        r['dz'] = 'dz9'
       elif hour >= 17 and hour < 19:
-        r['hour'] = 'dz10'
+        r['dz'] = 'dz10'
       elif hour >= 19 and hour < 21:
-        r['hour'] = 'dz11'
+        r['dz'] = 'dz11'
       elif hour >= 21 and hour < 23:
-        r['hour'] = 'dz12'
+        r['dz'] = 'dz12'
 
       r['minute'] = minute
     except Exception as e:
