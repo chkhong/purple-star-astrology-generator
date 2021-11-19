@@ -1,13 +1,7 @@
 import uvicorn
-from fastapi import FastAPI, Body
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from loguru import logger
-import traceback
-from schema import schema
-from functions.arranger import Arranger
-
-arranger = Arranger()
 
 app = FastAPI(
   title="Sample Application",
@@ -42,6 +36,7 @@ HEADERS = {
     "Content-Security-Policy": "default-src https:"
 }
 
+
 OUTPUT_RESPONSE = {
     "success": False,
     "message": "",
@@ -62,18 +57,6 @@ def set_out_response(**args)->dict:
 @app.get('/')
 def hello():
   return {"message": "App is running..."}
-
-@app.post('/arrange')
-def arrange(payload:schema.Request = Body(..., examples=schema.Request.Example.examples),):
-  r = {}
-  try:
-    payload = dict(payload) 
-    r = arranger.arrange(year=payload['year'],month=payload['month'],day=payload['day'],hour=payload['hour'],minute=payload['minute'])
-  except Exception as e:
-    logger.error(e)
-    logger.error(traceback.format_exc())
-  finally:
-    return r
 
 
 if __name__ == '__main__':
