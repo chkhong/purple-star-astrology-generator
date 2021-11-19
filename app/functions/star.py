@@ -3,23 +3,7 @@ from map import code_star_map, star_intensity_map, year_effect_map, five_element
 import traceback
 from math import floor
 
-class Star:
-  def __init__(self, code:str, intensity:int=0, effect:int=0):
-    self.code = code
-    self.intensity = intensity
-    self.effect = effect
-
 class StarMapper:
-  def __init__(self):
-    # 代码与星星
-    self.code_star_map = code_star_map
-    # 星曜亮度
-    self.star_intensity_map = star_intensity_map
-    # 生年四化
-    self.year_effect_map = year_effect_map
-    self.five_elements_dz_map = five_elements_dz_map
-    self.five_elements_map = five_elements_map
-    self.five_elements_map_inv = five_elements_map_inv
 
   # 星曜亮度
   def intensity_of(self, code:str, dz:str) -> str:
@@ -36,9 +20,9 @@ class StarMapper:
     intensity = ''
     try:
       i = int(dz[2:])
-      temp = self.star_intensity_map[code][i]
+      temp = star_intensity_map[code][i]
       intensity = code_star_map['i'+str(temp)]
-      logger.debug(f"{self.code_star_map[code]}'s intensity at {self.code_star_map[dz]}: {intensity}")
+      logger.debug(f"{code_star_map[code]}'s intensity at {code_star_map[dz]}: {intensity}")
     except Exception as e:
       logger.error(e)
       logger.error(traceback.format_exc())
@@ -60,9 +44,9 @@ class StarMapper:
     effect = ''
     try:
       tg_int = int(tg[2:]) + 1
-      if code in self.year_effect_map[tg_int]:
-        effect = code_star_map['e'+str(self.year_effect_map[tg_int].index(code))]
-        logger.debug(f"{self.code_star_map[code]}'s effect in {code_star_map[tg]} is {effect}")
+      if code in year_effect_map[tg_int]:
+        effect = code_star_map['e'+str(year_effect_map[tg_int].index(code))]
+        logger.debug(f"{code_star_map[code]}'s effect in {code_star_map[tg]} is {effect}")
     except Exception as e:
       logger.error(e)
       logger.error(traceback.format_exc())
