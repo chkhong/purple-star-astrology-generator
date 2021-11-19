@@ -1,13 +1,16 @@
 from loguru import logger
 import traceback
-from map import code_star_map
-from calendar_converter import CalendarConverter
-from place import PlaceMapper
+from .map import code_star_map
+from .calendar_converter import CalendarConverter
+from .place import PlaceMapper
+from .star import StarMapper
+import json
 
 class Arranger:
   def __init__(self):
     self.cc = CalendarConverter()
     self.pm = PlaceMapper()
+    self.st = StarMapper()
 
   def __del__(self):
     pass
@@ -51,22 +54,38 @@ class Arranger:
 
     r = self._setBoilerplate()
     try:
-      # 换算出生日期时间
-      birth_details = self.cc.western_to_chinese(year, month, day, hour, minute)
-      logger.debug(birth_details)
+      # 换算出生日期时间 bd -> birth_details
+      bd = self.cc.western_to_chinese(year, month, day, hour, minute)
+      logger.debug(bd)
 
       # 安命宫
-      r = self.pm.setAllPlace(r, birth_details['month'], birth_details['dz'])
-
+      r = self.pm.setAllPlace(r, bd['month'], bd['dz'])
       # 安十二宫干
-      r = self.pm.setPalaceDZ(r, birth_details['tg'])
+      r = self.pm.setPalaceDZ(r, bd['tg'])
+      # 安五行局
+      r = self.st.setFiveElements(r)
+      # 安十四主星
+      r = self.st.setMainStars(r, bd['tg'], bd['day'])
+      # 安生月系诸星
+      r = self.st.setStarsWithMonth(r, bd['month'], bd['tg'])
+      # 安时系诸星
+      r = self.st.setStarsWithHour(r, bd['tg'], bd['dz'], bd['nz'])
+      # 安生年支系诸星
+      r = self.st.setStarsWithNZ(r, bd['nz'])
+      # 安生年干系诸星
+      r = self.st.setStarsWithYear(r,bd['tg'])
 
       logger.debug(r)
+
+
+      with open('output.json', 'w') as output:
+        json.dump(r,output,indent=2,ensure_ascii=False)
+
     except Exception as e:
       logger.error(e)
       logger.error(traceback.format_exc())
     finally:
-      return "ok"
+      return r
 
 if __name__ == '__main__':
   a = Arranger()
