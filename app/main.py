@@ -64,7 +64,7 @@ def hello():
   return {"message": "App is running..."}
 
 @app.post('/arrange')
-def arrange(payload:schema.Request = Body(..., examples=schema.Request.Example.examples),):
+def arrange(payload:schema.Request = Body(..., examples=schema.Request.Example.examples)):
   r = {}
   try:
     payload = dict(payload) 

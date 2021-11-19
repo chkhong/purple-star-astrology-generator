@@ -39,6 +39,9 @@ class CalendarConverter:
       elif hour >= 21 and hour < 23:
         r['dz'] = 'dz11'
 
+      # 年支
+      r['nz'] = 'dz' + str((r['year']-4) % 12)
+
       # 天干
       temp = (r['year'] - 4) % 10
       r['tg'] = 'tg' + str(temp)

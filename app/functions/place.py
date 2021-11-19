@@ -1,5 +1,5 @@
 from loguru import logger
-from map import code_star_map, tg_palace_dz_map
+from .map import code_star_map, tg_palace_dz_map
 import traceback
 from math import ceil
 
@@ -26,6 +26,9 @@ class PlaceMapper:
     # 命宫位置
     life_location = (1 + month - (dz_int)) % 12
 
+    payload['命支'] = 'dz'+str(life_location)
+    logger.debug(f'命宫 at {code_star_map["dz"+str(life_location)]}')
+
     # 排12宫
     for i in range(0,12):
       # loc: location of palace
@@ -46,6 +49,8 @@ class PlaceMapper:
     elif dz_int % 6 == 0:
       payload['身宫'] = code_star_map['p0']
 
+    logger.debug(f'身宫: {payload["身宫"]}')
+
     return payload
 
   def setPalaceDZ(self, payload:dict, tg:str) -> dict:
@@ -61,10 +66,15 @@ class PlaceMapper:
     
     tg_int_reduced = int(tg[2:]) % 5
     start = tg_palace_dz_map[tg_int_reduced]
-    logger.warning(start)
 
+    debug_msg = []
     for i in range(0,12):
-      payload[(i+2)%12]['地支'] = code_star_map['tg'+str((start+i)%10)]
+      to_add = code_star_map['tg'+str((start+i)%10)]
+      payload[(i+2)%12]['天干'] = to_add
+      if payload[(i+2)%12]['宫位'] == code_star_map['p0']:
+        payload['命干'] = 'tg'+str(((start+i)%10))
+      debug_msg += to_add
+    logger.debug(debug_msg)
 
     return payload
 
