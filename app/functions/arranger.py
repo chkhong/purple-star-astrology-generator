@@ -11,14 +11,7 @@ class Arranger:
   def __del__(self):
     pass
 
-  def arrange(self, year:int, month:int, day:int, hour:int=0, minute:int=0):
-    ''' Function description
-  
-      Args:
-        
-      Returns:
-        
-    '''
+  def _setBoilerplate(self) -> dict:
     r = {
       "身宫": "", "五行局": "",
       0:{},
@@ -34,9 +27,27 @@ class Arranger:
       10:{},
       11:{},
     }
+    for i in range(0,12):
+      r[i]['主星'] = []
+      r[i]['吉星'] = []
+      r[i]['煞星'] = []
+      r[i]['杂曜'] = []
+      
+    return r
+
+  def arrange(self, year:int, month:int, day:int, hour:int=0, minute:int=0):
+    ''' Function description
+  
+      Args:
+        
+      Returns:
+        
+    '''
+    
     logger.info('='*100)
     logger.info('arrange() running...')
 
+    r = self._setBoilerplate()
     try:
       # 换算出生日期时间
       birth_details = self.cc.western_to_chinese(year, month, day, hour, minute)

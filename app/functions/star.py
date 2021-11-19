@@ -112,9 +112,6 @@ class StarMapper:
     logger.debug(f'{code_star_map["m0"]} location: {code_star_map["dz"+str(ziwei_loc)]}')
     logger.debug(f'{code_star_map["m6"]} location: {code_star_map["dz"+str(tianfu_loc)]}')
 
-    for i in range(0,12):
-      payload[i]['主星'] = []
-
     for offset in range(0,12):
       # 紫微星群
       star_code = ziwei_star_group_map[offset]
