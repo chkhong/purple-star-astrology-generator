@@ -42,8 +42,8 @@ _TOC_
 |  陀羅  |    bad    |  b1  |
 |  火星  |    bad    |  b2  |
 |  鈴星  |    bad    |  b3  |
-|  地劫  |    bad    |  b4  |
-|  地空  |    bad    |  b5  |
+|  地空  |    bad    |  b4  |
+|  地劫  |    bad    |  b5  |
 |  化祿  |  effect   |  e0  |
 |  化權  |  effect   |  e1  |
 |  化科  |  effect   |  e2  |
@@ -172,3 +172,4 @@ Arrange purple stars 排盘
 
 https://baike.baidu.hk/item/%E5%8D%81%E5%9B%9B%E4%B8%BB%E6%98%9F/991733
 http://m.dajiazhao.com/paipan/zwdsjc/9540.html
+https://wantubizhi.com/image.aspx

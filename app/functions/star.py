@@ -21,6 +21,8 @@ class StarMapper:
     try:
       i = int(dz[2:])
       temp = star_intensity_map[code][i]
+      if temp == 9:
+        return intensity
       intensity = code_star_map['i'+str(temp)]
       logger.debug(f"{code_star_map[code]}'s intensity at {code_star_map[dz]}: {intensity}")
     except Exception as e:
@@ -145,15 +147,47 @@ class StarMapper:
     # 安左辅
     star_code = 'g2'
     star = code_star_map[star_code]
-    payload[(3+month)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((3+month)%12)), self.effect_of(star,tg)]
-
+    payload[(3+month)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((3+month)%12)), self.effect_of(star_code,tg)]
     # 安右弼
     star_code = 'g3'
     star = code_star_map[star_code]
-    payload[(11-month)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((11-month)%12)), self.effect_of(star,tg)]
+    payload[(11-month)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((11-month)%12)), self.effect_of(star_code,tg)]
 
     return payload
 
+  def setStarsWithHour(self, payload:dict, dz:str, tg:str) -> dict:
+    ''' Function description
+  
+      Args:
+        dz: di zhi of birth hour
+        tg: tian gan of birth year
+      Returns:
+        
+    '''
+    logger.info('='*100)
+    logger.info('setStarsWithHour() running...')
+
+    dz_int = int(dz[2:])
+
+    # 安文昌
+    star_code = 'g0'
+    star = code_star_map[star_code]
+    payload[(10-dz_int)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((10-dz_int)%12)), self.effect_of(star_code,tg)]
+    # 安文曲
+    star_code = 'g1'
+    star = code_star_map[star_code]
+    payload[(4+dz_int)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((4+dz_int)%12)), self.effect_of(star_code,tg)]
+    # 安地空
+    star_code = 'b4'
+    star = code_star_map[star_code]
+    payload[(11-dz_int)%12]['煞星'] += [star, self.intensity_of(star_code, 'dz'+str((11-dz_int)%12)), '']
+    # 安地劫
+    star_code = 'b5'
+    star = code_star_map[star_code]
+    payload[(11+dz_int)%12]['煞星'] += [star, self.intensity_of(star_code, 'dz'+str((11+dz_int)%12)), '']
+
+    logger.debug(payload)
+    return payload
 
 if __name__ == '__main__':
   sm = StarMapper()
@@ -183,4 +217,5 @@ if __name__ == '__main__':
   # sm.setMainStars(r,'tg5',25,'火六局')
   # sm.setMainStars({},25,'木三局')
   # sm.setMainStars({},28,'水二局')
-  sm.setStarsWithMonth(r, 11,'tg5')
+  # sm.setStarsWithMonth(r, 11,'tg5')
+  sm.setStarsWithHour(r, 'dz10','tg5')
