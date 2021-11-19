@@ -127,8 +127,31 @@ class StarMapper:
         to_add = [star,self.intensity_of(star_code, 'dz'+str((tianfu_loc+offset)%12)),self.effect_of(star_code,tg)]
         payload[(tianfu_loc+offset)%12]['主星'].append(to_add)
 
-
     logger.debug(payload)
+    return payload
+
+  def setStarsWithMonth(self, payload:dict, month:int, tg:str) -> dict:
+    ''' set stars that are determined by month
+  
+      Args:
+        month: birth month
+        tg: tian gan of birth year
+      Returns:
+        payload: dict
+    '''
+    logger.info('='*100)
+    logger.info('setStarsWithMonth() running...')
+
+    # 安左辅
+    star_code = 'g2'
+    star = code_star_map[star_code]
+    payload[(3+month)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((3+month)%12)), self.effect_of(star,tg)]
+
+    # 安右弼
+    star_code = 'g3'
+    star = code_star_map[star_code]
+    payload[(11-month)%12]['吉星'] += [star, self.intensity_of(star_code, 'dz'+str((11-month)%12)), self.effect_of(star,tg)]
+
     return payload
 
 
@@ -149,9 +172,15 @@ if __name__ == '__main__':
     10:{},
     11:{},
   }
+  for i in range(0,12):
+    r[i]['主星'] = []
+    r[i]['吉星'] = []
+    r[i]['煞星'] = []
+    r[i]['杂曜'] = []
   # sm.intensity_of('m8', 'dz3')
   # sm.effect_of('m3', 'tg5')
   # sm.setFiveElements({},'tg2','dz2')
-  sm.setMainStars(r,'tg5',25,'火六局')
+  # sm.setMainStars(r,'tg5',25,'火六局')
   # sm.setMainStars({},25,'木三局')
   # sm.setMainStars({},28,'水二局')
+  sm.setStarsWithMonth(r, 11,'tg5')
