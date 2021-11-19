@@ -1,5 +1,5 @@
 from loguru import logger
-from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map, five_elements_map_inv, ziwei_tianfu_map, ziwei_star_group_map, tianfu_star_group_map
+from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map, five_elements_map_inv, ziwei_tianfu_map, ziwei_star_group_map, tianfu_star_group_map, lucun_tg_map, kuiyue_tg_map
 import traceback
 from math import floor
 
@@ -155,14 +155,14 @@ class StarMapper:
 
     return payload
 
-  def setStarsWithHour(self, payload:dict, dz:str, tg:str) -> dict:
-    ''' Function description
+  def setStarsWithHour(self, payload:dict, tg:str, dz:str) -> dict:
+    ''' set stars that are determined by hour
   
       Args:
-        dz: di zhi of birth hour
         tg: tian gan of birth year
+        dz: di zhi of birth hour
       Returns:
-        
+        payload: dict
     '''
     logger.info('='*100)
     logger.info('setStarsWithHour() running...')
@@ -189,6 +189,38 @@ class StarMapper:
     logger.debug(payload)
     return payload
 
+  def setStarsWithYear(self, payload:dict, tg:str) -> dict:
+    ''' set stars that are determined by year
+  
+      Args:
+        tg: tian gan of birth year
+      Returns:
+        paylaod: dict
+        
+    '''
+    logger.info('='*100)
+    logger.info('setStarsWithYear() running...')
+
+    tg_int = int(tg[2:]) + 1
+
+    # 安禄存擎羊陀螺
+    lucun_star_code = 'g6'
+    qingyang_star_code = 'b0'
+    tuoluo_star_code = 'b1'
+    lucun_loc = lucun_tg_map[tg_int]
+    payload[lucun_loc]['吉星'] += [code_star_map[lucun_star_code], self.intensity_of(lucun_star_code,'dz'+str(lucun_loc)), '']
+    payload[(lucun_loc+1)%12]['煞星'] += [code_star_map[qingyang_star_code], self.intensity_of(qingyang_star_code,'dz'+str((lucun_loc+1)%12)), '']
+    payload[(lucun_loc-1)%12]['煞星'] += [code_star_map[tuoluo_star_code], self.intensity_of(tuoluo_star_code,'dz'+str((lucun_loc-1)%12)), '']
+
+    # 安天魁天钺
+    tiankui_star_code = 'g4'
+    tianyue_star_code = 'g5'
+    tiankui_star_loc, tianyue_star_loc = kuiyue_tg_map[tg_int]
+    payload[tiankui_star_loc]['吉星'] += [code_star_map[tiankui_star_code], self.intensity_of(tiankui_star_code,'dz'+str(tiankui_star_loc)), '']
+    payload[tianyue_star_loc]['吉星'] += [code_star_map[tianyue_star_code], self.intensity_of(tianyue_star_code,'dz'+str(tianyue_star_loc)), '']
+
+    return payload
+
 if __name__ == '__main__':
   sm = StarMapper()
   r = {
@@ -207,6 +239,7 @@ if __name__ == '__main__':
     11:{},
   }
   for i in range(0,12):
+    r[i]['地支'] = code_star_map['dz'+str(i)]
     r[i]['主星'] = []
     r[i]['吉星'] = []
     r[i]['煞星'] = []
@@ -218,4 +251,5 @@ if __name__ == '__main__':
   # sm.setMainStars({},25,'木三局')
   # sm.setMainStars({},28,'水二局')
   # sm.setStarsWithMonth(r, 11,'tg5')
-  sm.setStarsWithHour(r, 'dz10','tg5')
+  # sm.setStarsWithHour(r, 'dz10','tg5')
+  sm.setStarsWithYear(r,'tg5')

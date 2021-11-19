@@ -1,5 +1,6 @@
 from loguru import logger
 import traceback
+from map import code_star_map
 from calendar_converter import CalendarConverter
 from place import PlaceMapper
 
@@ -28,6 +29,7 @@ class Arranger:
       11:{},
     }
     for i in range(0,12):
+      r[i]['地支'] = code_star_map['dz'+str(i)]
       r[i]['主星'] = []
       r[i]['吉星'] = []
       r[i]['煞星'] = []
