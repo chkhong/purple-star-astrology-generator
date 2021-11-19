@@ -1,5 +1,5 @@
 from loguru import logger
-from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map, five_elements_map_inv, ziwei_tianfu_map, ziwei_star_group_map, tianfu_star_group_map, lucun_tg_map, kuiyue_tg_map
+from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map, five_elements_map_inv, ziwei_tianfu_map, ziwei_star_group_map, tianfu_star_group_map, lucun_tg_map, kuiyue_tg_map, huoxing_nz_map, lingxing_nz_map
 import traceback
 from math import floor
 
@@ -155,12 +155,13 @@ class StarMapper:
 
     return payload
 
-  def setStarsWithHour(self, payload:dict, tg:str, dz:str) -> dict:
+  def setStarsWithHour(self, payload:dict, tg:str, dz:str, nz:str) -> dict:
     ''' set stars that are determined by hour
   
       Args:
         tg: tian gan of birth year
         dz: di zhi of birth hour
+        nz: nian zhi of birth year
       Returns:
         payload: dict
     '''
@@ -168,6 +169,7 @@ class StarMapper:
     logger.info('setStarsWithHour() running...')
 
     dz_int = int(dz[2:])
+    nz_int = int(nz[2:])
 
     # 安文昌
     star_code = 'g0'
@@ -185,6 +187,16 @@ class StarMapper:
     star_code = 'b5'
     star = code_star_map[star_code]
     payload[(11+dz_int)%12]['煞星'] += [star, self.intensity_of(star_code, 'dz'+str((11+dz_int)%12)), '']
+    # 安火星
+    star_code = 'b2'
+    star = code_star_map[star_code]
+    loc = huoxing_nz_map[nz_int]
+    payload[(loc+dz_int)%12]['煞星'] += [star, self.intensity_of(star_code,'dz'+str((loc+dz_int)%12)), '']
+    # 安铃星
+    star_code = 'b3'
+    star = code_star_map[star_code]
+    loc = lingxing_nz_map[nz_int]
+    payload[(loc+dz_int)%12]['煞星'] += [star, self.intensity_of(star_code,'dz'+str((loc+dz_int)%12)), '']
 
     logger.debug(payload)
     return payload
@@ -251,5 +263,5 @@ if __name__ == '__main__':
   # sm.setMainStars({},25,'木三局')
   # sm.setMainStars({},28,'水二局')
   # sm.setStarsWithMonth(r, 11,'tg5')
-  # sm.setStarsWithHour(r, 'dz10','tg5')
-  sm.setStarsWithYear(r,'tg5')
+  sm.setStarsWithHour(r,'tg5', 'dz10', 'dz3')
+  # sm.setStarsWithYear(r,'tg5')
