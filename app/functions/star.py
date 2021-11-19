@@ -1,5 +1,5 @@
 from loguru import logger
-from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map, five_elements_map_inv, ziwei_tianfu_map, ziwei_star_group_map, tianfu_star_group_map, lucun_tg_map, kuiyue_tg_map, huoxing_nz_map, lingxing_nz_map
+from map import code_star_map, star_intensity_map, year_effect_map, five_elements_dz_map, five_elements_map, five_elements_map_inv, ziwei_tianfu_map, ziwei_star_group_map, tianfu_star_group_map, lucun_tg_map, kuiyue_tg_map, huoxing_nz_map, lingxing_nz_map, tianma_nz_map
 import traceback
 from math import floor
 
@@ -207,7 +207,7 @@ class StarMapper:
       Args:
         tg: tian gan of birth year
       Returns:
-        paylaod: dict
+        payload: dict
         
     '''
     logger.info('='*100)
@@ -232,6 +232,30 @@ class StarMapper:
     payload[tianyue_star_loc]['吉星'] += [code_star_map[tianyue_star_code], self.intensity_of(tianyue_star_code,'dz'+str(tianyue_star_loc)), '']
 
     return payload
+  
+  def setStarsWithNZ(self, payload:dict, nz:str) -> dict:
+    ''' set stars that are determined by nian zhi
+  
+      Args:
+        nz: nian zhi of birth year
+      Returns:
+        payload: dict
+    '''
+    logger.info('='*100)
+    logger.info('setStarsWithNZ() running...')
+
+    nz_int = int(nz[2:])
+
+    # 安天马
+    star_code = 'g7'
+    star = code_star_map[star_code]
+    loc = tianma_nz_map[nz_int]
+    payload[loc]['吉星'] += [star, '', '']
+
+    logger.debug(payload)
+    return payload
+    
+
 
 if __name__ == '__main__':
   sm = StarMapper()
@@ -263,5 +287,6 @@ if __name__ == '__main__':
   # sm.setMainStars({},25,'木三局')
   # sm.setMainStars({},28,'水二局')
   # sm.setStarsWithMonth(r, 11,'tg5')
-  sm.setStarsWithHour(r,'tg5', 'dz10', 'dz3')
+  # sm.setStarsWithHour(r,'tg5', 'dz10', 'dz3')
+  sm.setStarsWithNZ(r,'dz3')
   # sm.setStarsWithYear(r,'tg5')
